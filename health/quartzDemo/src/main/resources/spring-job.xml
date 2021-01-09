@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--    1.注册自定义的任务类-->
+    <bean id="myJob" class="com.tao.job.MyJob"/>
+
+    <!--    2.配置一个jobDetail，任务策略，关联任务对象与方法-->
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!--        任务触发时，就会找容器中的那个ref关联的对象-->
+        <property name="targetObject" ref="myJob"/>
+        <!--        指定调用的方法-->
+        <property name="targetMethod" value="abc"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <!--    3.配置一个触发器trigger，关联任务策略，触发时机表达式-->
+    <bean id="trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <!--        触发时时有的任务策略-->
+        <property name="jobDetail" ref="jobDetail"/>
+        <!--        触发的时机：使用七子表达式-->
+        <!--        条件：每间隔2秒触发一次-->
+        <property name="cronExpression" value="0/2 * * * * ?"/>
+    </bean>
+
+    <!--4.配置调度容器，绑定触发器-->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <!--  绑定触发器-->
+                <ref bean="trigger"/>
+            </list>
+        </property>
+    </bean>
+</beans>
