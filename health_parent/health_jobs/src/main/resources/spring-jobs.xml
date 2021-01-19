@@ -16,7 +16,7 @@
 <!--5.3 注册中心在哪 -->
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
 <!--5.4 dubbo注解扫包(controller时的扫包)  -->
-    <dubbo:annotation package="com.tao.health.jobs"/>
+    <dubbo:annotation package="com.itheima.health.jobs"/>
 
 <!--  导入freemarker  -->
     <import resource="classpath:spring-freemarker.xml"/>
